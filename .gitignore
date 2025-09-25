@@ -1,0 +1,39 @@
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
+
+# Compiled class files
+*.class
+
+# Build folders
+/target/
+/build/
+/out/
+
+# IDE-specific files
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+
+# Logs
+*.log
+
+# Package files
+*.jar
+*.war
+*.ear
+*.zip
+
+# Local configuration file
+application.properties
+application.yml
+application-local.properties
+
+# OS-specific files
+.DS_Store
+Thumbs.db
