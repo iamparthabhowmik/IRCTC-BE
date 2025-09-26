@@ -13,13 +13,21 @@ import java.util.Optional;
 import org.example.utils.UserServiceUtil;
 
 public class UserBookingService {
-    private static final String USER_FILE_PATH = "app/src/main/java/org/example/localDB/users.json";
+    private static final String USER_FILE_PATH = "D:/Full Stack Projects/IRCTC/app/src/main/java/org/example/localDB/users.json";
     private User user;
     private List<User> usersList;
     private ObjectMapper objectMapper = new ObjectMapper();
 
     public UserBookingService(User user) throws IOException {
         this.user = user;
+        loadUsers();
+    }
+
+    public UserBookingService() throws IOException {
+        loadUsers();
+    }
+
+    private void loadUsers() throws IOException {
         File users = new File(USER_FILE_PATH);
         usersList = objectMapper.readValue(users, new TypeReference<List<User>>() {});
     }
@@ -46,7 +54,7 @@ public class UserBookingService {
         objectMapper.writeValue(usersFile, usersList);
     }
 
-    public void fetchBooking(){
+    public void fetchBookings(){
         user.printBookedTickets();
     }
 

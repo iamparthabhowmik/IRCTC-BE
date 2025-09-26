@@ -1,11 +1,22 @@
 package org.example.entities;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 public class User {
+    @JsonProperty("name")
     private String name;
-    private String userId;
+    
+    @JsonProperty("password")
     private String password;
+    
+    @JsonProperty("hashed_password")
     private String hashedPassword;
+    
+    @JsonProperty("tickets_booked")
     private List<Ticket> ticketsBooked;
+    
+    @JsonProperty("user_id")
+    private String userId;
 
     public User(String name, String userId, String password, String hashedPassword, List<Ticket> ticketsBooked) {
         this.name = name;

@@ -3,12 +3,102 @@
  */
 package org.example;
 
-public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
+import java.util.Scanner;
+import java.util.UUID;
+import java.util.ArrayList;
 
+import org.example.services.UserBookingService;
+import org.example.utils.UserServiceUtil;
+import org.example.entities.User;
+
+public class App {
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        System.out.println("IRCTC backend is running...");
+        Scanner sc = new Scanner(System.in);
+        int option = 0;
+        UserBookingService userBookingService;
+        try {
+            userBookingService = new UserBookingService();
+        } catch (Exception e) {
+            System.out.println("Something went wrong: " + e.getMessage());
+            return;
+        }
+        while(option!=7){
+            System.out.println("\nPlease select an option:");
+            System.out.println("1. Sign Up");
+            System.out.println("2. Login");
+            System.out.println("3. Fetch Bookings");
+            System.out.println("4. Search Trains");
+            System.out.println("5. Book a seat");
+            System.out.println("6. Cancel my ticket");
+            System.out.println("7. Exit");
+            System.out.print("Enter your choice: ");
+            try {
+                option = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number between 1 and 7.");
+                continue;
+            }
+            if(option<1 || option>7){
+                System.out.println("Invalid input, Please enter a number between 1 and 7.");
+                continue;
+            }
+            switch(option) {
+                case 1:
+                    System.out.println("Sign Up process initiated...");
+                    System.out.println("Enter the username: ");
+                    String username = sc.nextLine();
+                    System.out.println("Enter the password: ");
+                    String password = sc.nextLine();
+                    String hassedPassword = UserServiceUtil.hashPassword(password);
+                    String userId = UUID.randomUUID().toString();
+                    User user = new User(username, userId, password, hassedPassword, new ArrayList<>());
+                    userBookingService.signUp(user);
+                    break;
+                case 2:
+                    System.out.println("Login process initiated...");
+                    System.out.println("Enter the username: ");
+                    username = sc.nextLine();
+                    System.out.println("Enter the password: ");
+                    password = sc.nextLine();
+                    hassedPassword = UserServiceUtil.hashPassword(password);
+                    userId = UUID.randomUUID().toString();
+                    user = new User(username, userId, password, hassedPassword, new ArrayList<>());
+                    try {
+                        userBookingService = new UserBookingService(user);
+                    } catch (Exception e) {
+                        System.out.println("Login Failed, Please check your credentials");
+                        continue;
+                    }
+                    Boolean loginStatus = userBookingService.loginUser();
+                    if(loginStatus){
+                        System.out.println("Login Successful");
+                    } else {
+                        System.out.println("Login Failed, Please check your credentials");
+                    }
+                    break;
+                case 3:
+                    System.out.println("Fetching bookings...");
+                    userBookingService.fetchBookings();
+                    break;
+                case 4:
+                    System.out.println("Searching trains...");
+                    // userBookingService.searchTrains(sc);
+                    break;
+                case 5:
+                    System.out.println("Booking a seat...");
+                    // userBookingService.bookSeat(sc);
+                    break;
+                case 6:
+                    System.out.println("Cancelling a ticket...");
+                    // userBookingService.showHelp();
+                    break;
+                case 7:
+                    System.out.println("Exiting IRCTC backend. Goodbye!");
+                    break;
+                default:
+                    System.out.println("Invalid option. Please try again.");
+            }
+        }
     }
 }
